@@ -1,0 +1,14 @@
+---
+# defaults file for kibana
+
+kibana_version: 4.1.1
+kibana_checksum: True
+kibana_uninstall_previous: False
+kibana_pkg_dest: /usr/local
+kibana_dest: /usr/local/kibana
+kibana_user: root
+kibana_group: staff
+kibana_host: "0.0.0.0"
+kibana_port: 5601
+kibana_elasticsearch_url: http://localhost:9200
+

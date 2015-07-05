@@ -1,0 +1,39 @@
+---
+# tasks file for go
+
+# https://www.elastic.co/downloads/kibana
+
+- file: path={{ kibana_dest }} state=absent
+  when: kibana_uninstall_previous == true
+
+- get_url: url=https://download.elastic.co/kibana/kibana/kibana-{{ kibana_version }}-linux-x64.tar.gz mode=0644
+  args:
+    dest: /tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz
+
+- get_url: url=https://download.elastic.co/kibana/kibana/kibana-{{ kibana_version }}-linux-x64.tar.gz.sha1.txt mode=0644
+  args:
+    dest: /tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz.sha1
+
+- name: checksum sha1
+  shell: sha1sum kibana-{{ kibana_version }}-linux-x64.tar.gz.sha1 -c
+  when: kibana_checksum == True
+  args:
+    chdir: /tmp
+    creates: "{{ kibana_dest }}/bin"
+
+- unarchive: src=/tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz dest={{ kibana_pkg_dest }}
+  args:
+    copy: no
+    creates: "{{ kibana_dest }}/bin"
+    group: "{{ kibana_group }}"
+    owner: "{{ kibana_user }}"
+
+- stat: path="{{ kibana_pkg_dest }}/kibana-{{ kibana_version }}-linux-x64"
+  register: kibana_exists
+
+- command: mv {{ kibana_pkg_dest }}/kibana-{{ kibana_version }}-linux-x64 {{ kibana_dest }}
+  when: kibana_exists.stat.exists == True
+
+- template: src=kibana.yml.j2 dest="{{ kibana_dest }}/config/kibana.yml" owner={{ kibana_user }} group={{ kibana_group }} mode=0644
+
+- command: "{{ kibana_dest }}/bin/kibana --version"

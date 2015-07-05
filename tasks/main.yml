@@ -1,0 +1,4 @@
+---
+# tasks file for kibana
+
+- include: main-pkg.yml
