@@ -1,0 +1,9 @@
+---
+
+# MARVEL
+# https://www.elastic.co/downloads/marvel
+- command: bin/kibana plugin --install elasticsearch/marvel/latest
+  args:
+    chdir: "{{ kibana_dest }}"
+    creates: "{{ kibana_dest }}/installedPlugins/marvel"
+  when: kibana_install_marvel == true

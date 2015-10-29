@@ -6,6 +6,7 @@
 - file: path={{ kibana_dest }} state=absent
   when: kibana_uninstall_previous == true
 
+# Download package and checksum
 - get_url: url=https://download.elastic.co/kibana/kibana/kibana-{{ kibana_version }}-linux-x64.tar.gz mode=0644
   args:
     dest: /tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz
@@ -14,6 +15,7 @@
   args:
     dest: /tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz.sha1
 
+# Checksum
 - name: checksum sha1
   shell: sha1sum kibana-{{ kibana_version }}-linux-x64.tar.gz.sha1 -c
   when: kibana_checksum == True
@@ -21,6 +23,7 @@
     chdir: /tmp
     creates: "{{ kibana_dest }}/bin"
 
+# Extract from package to tmp directory
 - unarchive: src=/tmp/kibana-{{ kibana_version }}-linux-x64.tar.gz dest={{ kibana_pkg_dest }}
   args:
     copy: no
@@ -28,12 +31,16 @@
     group: "{{ kibana_group }}"
     owner: "{{ kibana_user }}"
 
+# Check if already installed
 - stat: path="{{ kibana_pkg_dest }}/kibana-{{ kibana_version }}-linux-x64"
   register: kibana_exists
 
+# Move to destination
 - command: mv {{ kibana_pkg_dest }}/kibana-{{ kibana_version }}-linux-x64 {{ kibana_dest }}
   when: kibana_exists.stat.exists == True
 
+# Install configuration
 - template: src=kibana.yml.j2 dest="{{ kibana_dest }}/config/kibana.yml" owner={{ kibana_user }} group={{ kibana_group }} mode=0644
 
+# Run version command to validate installation
 - command: "{{ kibana_dest }}/bin/kibana --version"

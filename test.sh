@@ -13,16 +13,16 @@ EOF
 # Create group_vars for the webservers
 mkdir -p $TMP_DIR/group_vars 2> /dev/null
 cat << EOF > $TMP_DIR/group_vars/webservers
-# kibana_version: 4.1.1
+# kibana_version: 4.2.0
 # kibana_checksum: True
 # kibana_uninstall_previous: True
 # kibana_pkg_dest: /usr/local
-# kibana_dest: /usr/local/kibana
+# kibana_dest: "/usr/local/kibana_{{ kibana_version }}"
 # kibana_user: root
 # kibana_group: staff
 kibana_host: "127.0.0.1"
-kibana_port: 5602
-kibana_elasticsearch_url: http://localhost:9201
+kibana_port: 5601
+kibana_elasticsearch_url: http://localhost:9200
 EOF
 
 # Create Ansible config

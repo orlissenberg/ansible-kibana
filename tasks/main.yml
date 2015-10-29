@@ -1,4 +1,6 @@
 ---
 # tasks file for kibana
+# ﻿﻿http://127.0.0.1:5601
 
 - include: main-pkg.yml
+- include: main-plugins.yml
