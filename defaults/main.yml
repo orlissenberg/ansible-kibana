@@ -1,15 +1,12 @@
 ---
 # defaults file for kibana
 
-kibana_version: 4.2.0
-kibana_checksum: True
-kibana_uninstall_previous: False
-kibana_pkg_dest: /usr/local
-kibana_dest: "/usr/local/kibana_{{ kibana_version }}"
-kibana_user: root
-kibana_group: staff
-kibana_host: "0.0.0.0"
+kibana_user: kibana
+kibana_group: kibana
+
+kibana_host: "127.0.0.1"
 kibana_port: 5601
 kibana_elasticsearch_url: http://127.0.0.1:9200
 
-kibana_install_marvel: true
+kibana_install_xpack: false
+kibana_install_certbot: false

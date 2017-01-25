@@ -2,5 +2,13 @@
 # tasks file for kibana
 # ﻿﻿http://127.0.0.1:5601
 
-- include: main-pkg.yml
+- include: main-apt.yml
+
 - include: main-plugins.yml
+
+# Install configuration
+- template: src=kibana.yml.j2 dest="/etc/kibana/kibana.yml" owner={{ kibana_user }} group={{ kibana_group }} mode=0644
+  notify: restart-kibana
+
+# Run version command to validate installation
+- command: "/usr/share/kibana/bin/kibana --version"

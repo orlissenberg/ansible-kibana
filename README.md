@@ -5,6 +5,8 @@ Ansible Kibana Role
 
 Install Kibana
 
+[https://www.elastic.co/start](https://www.elastic.co/start)
+
 Requirements
 ------------
 
@@ -13,21 +15,20 @@ No requirements.
 Role Variables
 --------------
 
-    kibana_version: 4.1.1
-    kibana_checksum: True
-    kibana_uninstall_previous: False
-    kibana_pkg_dest: /usr/local
-    kibana_dest: /usr/local/kibana
-    kibana_user: root
-    kibana_group: staff
-    kibana_host: "0.0.0.0"
+    kibana_user: kibana
+    kibana_group: kibana
+
+    kibana_host: "127.0.0.1"
     kibana_port: 5601
-    kibana_elasticsearch_url: http://localhost:9201
+    kibana_elasticsearch_url: http://127.0.0.1:9200
+
+    kibana_install_xpack: false
+    kibana_install_certbot: false
 
 Dependencies
 ------------
 
-Elasticsearch instance (url).
+--
 
 Example Playbook
 ----------------

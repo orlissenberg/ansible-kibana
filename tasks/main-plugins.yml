@@ -1,9 +1,22 @@
 ---
 
-# MARVEL
-# https://www.elastic.co/downloads/marvel
-- command: bin/kibana plugin --install elasticsearch/marvel/latest
+# X-Pack
+# https://www.elastic.co/start
+
+# Default password and security API.
+# Log in as the built-in elastic user with the password changeme.
+# https://www.elastic.co/guide/en/x-pack/5.1/kibana.html
+
+- command: bin/kibana-plugin install x-pack
   args:
-    chdir: "{{ kibana_dest }}"
-    creates: "{{ kibana_dest }}/installedPlugins/marvel"
-  when: kibana_install_marvel == true
+    chdir: "/usr/share/kibana"
+    creates: "/usr/share/kibana/plugins/x-pack"
+  when: kibana_install_xpack == true
+  notify: restart-kibana
+
+- command: bin/kibana-plugin remove x-pack
+  args:
+    chdir: /usr/share/kibana
+    removes: /usr/share/kibana/plugins/x-pack
+  when: kibana_install_xpack == false
+  notify: restart-kibana
